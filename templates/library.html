@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <!-- Add any additional head content here -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+{% endblock %}
+
+{% block adi_css %}
+    <!-- Add additional CSS file imports or styles here -->
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Library</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Publisher</th>
+                    <th>Developer</th>
+                    <th>Platform</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                    <tr>
+                        <td>{{ game.Gname }}</td>
+                        <td>{{ game.publisher.Pubname if game.publisher else 'Unknown' }}</td>
+                        <td>{{ game.developer.Devname if game.developer else 'Unknown' }}</td>
+                        <td>{{ game.platform.name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

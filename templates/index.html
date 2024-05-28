@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- Add any additional head content here -->
+{% endblock %}
+
+{% block body %}
+<h1>Welcome</h1>
+<div class="options-container">
+    <a href="{{ url_for('show_games') }}" class="option">Games</a>
+    <a href="{{ url_for('show_library') }}" class="option">Library</a>
+</div>
+{% endblock %}

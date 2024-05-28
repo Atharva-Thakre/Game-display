@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        /* Add custom CSS styles for the games table */
+        .games-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .games-table th,
+        .games-table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd; /* Add borders */
+        }
+
+        .games-table th {
+            background-color: turquoise;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Games</h1>
+        <table class="games-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Publisher</th>
+                    <th>Developer</th>
+                    <th>Platform</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                    <tr>
+                        <td>{{ game.Gname }}</td>
+                        <td>{{ game.publisher.Pubname }}</td>
+                        <td>{{ game.developer.Devname }}</td>
+                        <td>{{ game.platform.value }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

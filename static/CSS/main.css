@@ -1,0 +1,41 @@
+/* Apply background gradient */
+body {
+    background-image: linear-gradient(to bottom right, #007bff, #28a745, #20c997);
+    height: 100vh;
+    margin: 0; /* Remove default body margin */
+    padding: 0; /* Remove default body padding */
+  }
+  
+  /* Style heading */
+  h1 {
+    color: white;
+    text-align: center;
+  }
+  
+  /* Style all text to white */
+  body, p, a {
+    color: white;
+  }
+  
+  /* Style options */
+  .options-container {
+    text-align: center;
+    margin-top: 50px; /* Adjust margin as needed */
+  }
+  
+  .option {
+    display: inline-block;
+    margin: 0 20px; /* Adjust margin as needed */
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .option:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Lighten the background color on hover */
+  }
+  
