@@ -1,8 +1,10 @@
 from flask import Flask , render_template ,url_for,redirect,request,session
+import os
 from enum import Enum
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import Enum as DBEnum
+from sqlalchemy import create_engine
 from flask_login import UserMixin,login_user,LoginManager,login_required,logout_user,current_user
 
 app = Flask(__name__)
@@ -11,10 +13,25 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'Do_It_L'
 db = SQLAlchemy(app)
 
+def create_database_schema():
+    #Path to the SQL file
+    sql_file_path = os.path.join(app.root_path, 'Stp.sql')
+    
+    # Read the contents of the SQL file
+    with open(sql_file_path, 'r') as file:
+        sql_script = file.read()
+    
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    
+    # Establish a connection to the database
+    with engine.connect() as connection:
+        # Execute the SQL script to create the database schema
+        connection.execute(sql_script)
+
 class User(db.Model):
     __tablename__ = 'user'
 
-    Uid = db.Column(db.Integer, primary_key=True)  # Updated data type to Integer
+    Uid = db.Column(db.Integer, primary_key=True) 
     Uname = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     U_pawd = db.Column(db.String(128), nullable=False)
@@ -52,7 +69,7 @@ class Games(db.Model):
     pubId = db.Column(db.Integer, db.ForeignKey('pubs.pubId'))
     devId = db.Column(db.Integer, db.ForeignKey('devs.DevId')) 
     platform = db.Column(DBEnum(Platform), db.ForeignKey('pla.platform'))
-    publisher = db.relationship('pubs', backref='games')  # Define the relationship with the pubs table
+    publisher = db.relationship('pubs', backref='games')
     developer = db.relationship('devs', backref='games')
 
 
@@ -89,24 +106,23 @@ def index():
 
 @app.route('/games')
 def show_games():
-    # Query the Games table to fetch all games
     games = Games.query.distinct(Games.Gname).all()
     return render_template('games.html', games=games)
 
 @app.route('/library')
 def show_library():
-    # Check if the user is logged in
+    
     if 'email' in session:
         email = session['email']
-        # Query the User table to get the user object based on the email
+        
         user = User.query.filter_by(email=email).first()
-        # Query the G_lib table to get the user's library
+        
         library = G_lib.query.filter_by(Uid=user.Uid).all()
-        # Query the Games table to fetch game details for each game in the library
+        
         games_in_library = [Games.query.get(game.Gid) for game in library]
         return render_template('library.html', games=games_in_library)
     else:
-        # If user is not logged in, redirect to login page
+        
         return redirect(url_for('login_page'))
 
 if __name__ == "__main__":
